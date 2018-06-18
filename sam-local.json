@@ -1,0 +1,10 @@
+{
+  "GetUsers": {
+    "DYNAMODB_ENDPOINT": "http://localstack:4569/",
+    "TEST_TABLE_NAME": "TestTable"
+  },
+  "PutUsers": {
+    "DYNAMODB_ENDPOINT": "http://localstack:4569/",
+    "TEST_TABLE_NAME": "TestTable"
+  }
+}

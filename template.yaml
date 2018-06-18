@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "test"
+
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  Env:
+    Type: String
+    Default: local
+  DynamoDBEndpoint:
+    Type: String
+    Default: https://dynamodb.ap-northeast-1.amazonaws.com/
+  TestTableName:
+    Type: String
+    Default: TestTable
+Resources:
+  GetUsers:
+    Type: AWS::Serverless::Function 
+    Properties:
+      FunctionName:
+        Fn::Sub: ${Env}-GetUsers
+      Handler: src/functions/app.get
+      Runtime: python3.6
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Environment: 
+        Variables:
+          ENV: !Ref Env
+          DYNAMODB_ENDPOINT: !Ref DynamoDBEndpoint
+          TEST_TABLE_NAME:
+            Fn::Sub: ${TestTableName}
+      Events:
+        GetUsersAPI:
+          Type: Api 
+          Properties:
+            Path: /users/{userId}
+            Method: get
+  PostUsers:
+    Type: AWS::Serverless::Function 
+    Properties:
+      FunctionName:
+        Fn::Sub: ${Env}-PostUsers
+      Handler: src/functions/app.post
+      Runtime: python3.6
+      Policies: AmazonDynamoDBFullAccess
+      Environment: 
+        Variables:
+          ENV: !Ref Env
+          DYNAMODB_ENDPOINT: !Ref DynamoDBEndpoint
+          TEST_TABLE_NAME:
+            Fn::Sub: ${TestTableName}
+      Events:
+        PostUsersAPI:
+          Type: Api 
+          Properties:
+            Path: /users/
+            Method: post
+
+Outputs:
+
+    TestApi:
+      Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+
+    TestFunction:
+      Description: "Hello World Lambda Function ARN"
+      Value: !GetAtt TestFunction.Arn
+
+    TestFunctionIamRole:
+      Description: "Implicit IAM Role created for Hello World function"
+      Value: !GetAtt TestFunctionRole.Arn
