@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: test
+Globals:
+  Function:
+    Timeout: 30
+Parameters:
+  DynamoDBEndpoint:
+    Default: https://dynamodb.ap-northeast-1.amazonaws.com/
+    Type: String
+  Env:
+    Default: local
+    Type: String
+  TestTableName:
+    Default: TestTable
+    Type: String
+Resources:
+  GetUsers:
+    Properties:
+      CodeUri: s3://take-sam-test/309e1fdb2e2391b2f6b9db54a13ed59e
+      Environment:
+        Variables:
+          DYNAMODB_ENDPOINT:
+            Ref: DynamoDBEndpoint
+          ENV:
+            Ref: Env
+          TEST_TABLE_NAME:
+            Fn::Sub: ${TestTableName}
+      Events:
+        GetUsersAPI:
+          Properties:
+            Method: get
+            Path: /users/{userId}
+          Type: Api
+      FunctionName:
+        Fn::Sub: ${Env}-GetUsers
+      Handler: src/functions/app.get
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Runtime: python3.6
+    Type: AWS::Serverless::Function
+  PostUsers:
+    Properties:
+      CodeUri: s3://take-sam-test/309e1fdb2e2391b2f6b9db54a13ed59e
+      Environment:
+        Variables:
+          DYNAMODB_ENDPOINT:
+            Ref: DynamoDBEndpoint
+          ENV:
+            Ref: Env
+          TEST_TABLE_NAME:
+            Fn::Sub: ${TestTableName}
+      Events:
+        PostUsersAPI:
+          Properties:
+            Method: post
+            Path: /users/
+          Type: Api
+      FunctionName:
+        Fn::Sub: ${Env}-PostUsers
+      Handler: src/functions/app.post
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: python3.6
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

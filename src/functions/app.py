@@ -32,18 +32,22 @@ def get(event, context):
             }
         )
 
+        print(dynamo_response)
+
         response = {
             "statusCode": 200 ,
-            "body": json.dumps(response)
+            # "body": json.dumps(response)
+            "body": "success"
         }
 
+        print(response)
         return response
 
     except Exception as error:
         raise error
 
 
-def put(event, context):
+def post(event, context):
     try:
         user_id = str(uuid.uuid4())
 
@@ -61,7 +65,8 @@ def put(event, context):
         time.sleep(1)
         response = {
             "statusCode": 200 ,
-            "body": json.dumps(response)
+            # "body": json.dumps(response)
+            "body": "success!"
         }
         return response
     except Exception as error:

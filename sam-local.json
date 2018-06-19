@@ -3,7 +3,7 @@
     "DYNAMODB_ENDPOINT": "http://localstack:4569/",
     "TEST_TABLE_NAME": "TestTable"
   },
-  "PutUsers": {
+  "PostUsers": {
     "DYNAMODB_ENDPOINT": "http://localstack:4569/",
     "TEST_TABLE_NAME": "TestTable"
   }

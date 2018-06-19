@@ -4,7 +4,7 @@ Description: "test"
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
 
 Parameters:
   Env:
@@ -57,17 +57,3 @@ Resources:
           Properties:
             Path: /users/
             Method: post
-
-Outputs:
-
-    TestApi:
-      Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-
-    TestFunction:
-      Description: "Hello World Lambda Function ARN"
-      Value: !GetAtt TestFunction.Arn
-
-    TestFunctionIamRole:
-      Description: "Implicit IAM Role created for Hello World function"
-      Value: !GetAtt TestFunctionRole.Arn
